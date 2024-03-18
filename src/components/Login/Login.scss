@@ -1,0 +1,38 @@
+.form {
+    .title {
+        margin-bottom: 40px;
+        font-size: 30px;
+        font-weight: 700;
+        color: rgb(26, 25, 25);
+    }
+
+    .group-link {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: space-between;
+
+        .link {
+            cursor: pointer;
+            border: 1.2px solid #D3D8DC;
+            border-radius: 3px;
+            background: none;
+            padding: 10px 0px;
+            margin: 0px 3px;
+            width: 100%;
+        }
+    }
+
+    .line {
+        margin-bottom: 30px;
+    }
+
+    .btn-link {
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            padding: 0;
+        }
+    }
+}

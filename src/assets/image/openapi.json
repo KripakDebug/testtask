@@ -1,0 +1,388 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Auth API",
+		"description": "This is a 'Auth API project', with auto docs for the API",
+		"termsOfService": "https://cloud.qencode.com/qencode-terms-of-service.pdf",
+		"contact": {
+			"name": "Qencode",
+			"url": "https://cloud.qencode.com/",
+			"email": "support@qencode.com"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+		},
+		"version": "1"
+	},
+	"paths": {
+		"/v1/auth/access-token": {
+			"post": {
+				"tags": ["auth"],
+				"summary": "Access Token",
+				"operationId": "access_token_v1_auth_access_token_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/AccessTokenSchema" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/AuthResponseSchema" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/refresh-token": {
+			"post": {
+				"tags": ["auth"],
+				"summary": "Refresh Token",
+				"operationId": "refresh_token_v1_auth_refresh_token_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserRefreshTokenSchema"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/AuthResponseSchema" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/login": {
+			"post": {
+				"tags": ["login"],
+				"summary": "Login",
+				"operationId": "login_v1_auth_login_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/LoginSchema" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/AuthResponseSchema" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/password-reset": {
+			"post": {
+				"tags": ["password"],
+				"summary": "Password Reset",
+				"operationId": "password_reset_v1_auth_password_reset_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/PasswordResetSchema" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/ResponseModel" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v1/auth/password-set": {
+			"post": {
+				"tags": ["password"],
+				"summary": "Password Set",
+				"operationId": "password_set_v1_auth_password_set_post",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/PasswordSetNewSchema" }
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/ResponseModel" }
+							}
+						}
+					},
+					"422": {
+						"description": "Validation Error",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+							}
+						}
+					}
+				}
+			}
+		},
+		"/healthcheck": {
+			"get": {
+				"summary": "Health Check",
+				"description": "Health check endpoint.\nThis endpoint is used to check if the API is up and running.",
+				"operationId": "health_check_healthcheck_get",
+				"responses": {
+					"200": {
+						"description": "Successful Response",
+						"content": { "application/json": { "schema": {} } }
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"AccessTokenSchema": {
+				"properties": {
+					"access_id": {
+						"type": "string",
+						"maxLength": 32,
+						"title": "access_id"
+					}
+				},
+				"type": "object",
+				"required": ["access_id"],
+				"title": "AccessTokenSchema"
+			},
+			"AuthResponseSchema": {
+				"properties": {
+					"error": { "type": "integer", "title": "Error", "default": 0 },
+					"detail": {
+						"anyOf": [
+							{ "items": {}, "type": "array" },
+							{ "type": "string" },
+							{ "type": "integer" }
+						],
+						"title": "Detail"
+					},
+					"timestamp": {
+						"type": "number",
+						"title": "Timestamp",
+						"default": 1709814840.077122
+					},
+					"access_token": {
+						"type": "string",
+						"maxLength": 1024,
+						"title": "access_token"
+					},
+					"refresh_token": {
+						"type": "string",
+						"maxLength": 512,
+						"title": "refresh_token"
+					},
+					"token_expire": { "type": "number", "title": "token_expire" },
+					"refresh_token_expire": {
+						"type": "number",
+						"title": "refresh_token_expire"
+					}
+				},
+				"type": "object",
+				"required": [
+					"access_token",
+					"refresh_token",
+					"token_expire",
+					"refresh_token_expire"
+				],
+				"title": "AuthResponseSchema"
+			},
+			"HTTPValidationError": {
+				"properties": {
+					"detail": {
+						"items": { "$ref": "#/components/schemas/ValidationError" },
+						"type": "array",
+						"title": "Detail"
+					}
+				},
+				"type": "object",
+				"title": "HTTPValidationError"
+			},
+			"LoginSchema": {
+				"properties": {
+					"email": {
+						"type": "string",
+						"maxLength": 512,
+						"minLength": 15,
+						"format": "email",
+						"title": "email"
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 512,
+						"minLength": 5,
+						"title": "password"
+					}
+				},
+				"type": "object",
+				"required": ["email", "password"],
+				"title": "LoginSchema"
+			},
+			"PasswordResetSchema": {
+				"properties": {
+					"email": {
+						"type": "string",
+						"maxLength": 512,
+						"format": "email",
+						"title": "email"
+					},
+					"redirect_url": {
+						"anyOf": [
+							{ "type": "string", "maxLength": 2048 },
+							{ "type": "null" }
+						],
+						"title": "redirect_url",
+						"default": "https://auth-qa.qencode.com/password-set"
+					}
+				},
+				"type": "object",
+				"required": ["email"],
+				"title": "PasswordResetSchema"
+			},
+			"PasswordSetNewSchema": {
+				"properties": {
+					"token": {
+						"type": "string",
+						"maxLength": 64,
+						"title": "token",
+						"description": "Token from URL args (token)"
+					},
+					"secret": {
+						"type": "string",
+						"maxLength": 64,
+						"title": "secret",
+						"description": "CSRF token from URL args (secret)"
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 512,
+						"title": "password",
+						"description": "New password"
+					},
+					"password_confirm": {
+						"anyOf": [
+							{ "type": "string", "maxLength": 512 },
+							{ "type": "null" }
+						],
+						"title": "password_confirm",
+						"description": "Confirm password"
+					}
+				},
+				"type": "object",
+				"required": ["token", "secret", "password"],
+				"title": "PasswordSetNewSchema"
+			},
+			"ResponseModel": {
+				"properties": {
+					"error": { "type": "integer", "title": "Error", "default": 0 },
+					"detail": {
+						"anyOf": [
+							{ "items": {}, "type": "array" },
+							{ "type": "string" },
+							{ "type": "integer" }
+						],
+						"title": "Detail"
+					},
+					"timestamp": {
+						"type": "number",
+						"title": "Timestamp",
+						"default": 1709814840.077122
+					}
+				},
+				"type": "object",
+				"title": "ResponseModel"
+			},
+			"UserRefreshTokenSchema": {
+				"properties": {
+					"refresh_token": {
+						"type": "string",
+						"maxLength": 512,
+						"title": "refresh_token"
+					}
+				},
+				"type": "object",
+				"required": ["refresh_token"],
+				"title": "UserRefreshTokenSchema"
+			},
+			"ValidationError": {
+				"properties": {
+					"loc": {
+						"items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+						"type": "array",
+						"title": "Location"
+					},
+					"msg": { "type": "string", "title": "Message" },
+					"type": { "type": "string", "title": "Error Type" }
+				},
+				"type": "object",
+				"required": ["loc", "msg", "type"],
+				"title": "ValidationError"
+			}
+		}
+	}
+}
